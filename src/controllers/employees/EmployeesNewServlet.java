@@ -1,4 +1,4 @@
-package controllers;
+package controllers.employees;
 
 import java.io.IOException;
 
@@ -9,19 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Reservation;
-
+import models.Employee;
 /**
- * Servlet implementation class NewServlet
+ * Servlet implementation class EmployeesNewServlet
  */
-@WebServlet("/new")
-public class NewServlet extends HttpServlet {
+@WebServlet("/employees/new")
+public class EmployeesNewServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NewServlet() {
+    public EmployeesNewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +30,10 @@ public class NewServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("_token", request.getSession().getId());
+        request.setAttribute("employee", new Employee());
 
-        request.setAttribute("reservation", new Reservation());
-
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reservations/new.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/new.jsp");
         rd.forward(request, response);
-     }
-
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doGet(request, response);
     }
 
 }

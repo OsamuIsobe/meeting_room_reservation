@@ -8,7 +8,7 @@
             <c:import url="_form.jsp" />
         </form>
 
-        <p><a href="${pageContext.request.contextPath}/index">一覧に戻る</a></p>
+        <p><a href="${pageContext.request.contextPath}/reservations/index">一覧に戻る</a></p>
         <p><a href="#" onclick="confirmDestroy();">この予約を削除する</a></p>
         <form method="POST" action="${pageContext.request.contextPath}/destroy">
             <input type="hidden" name="_token" value="${_token}" />

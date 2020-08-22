@@ -1,4 +1,4 @@
-package controllers;
+package controllers.reservations;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class DestroyServlet extends HttpServlet {
 
             request.getSession().removeAttribute("reservation_id");
 
-            response.sendRedirect(request.getContextPath() + "/index");
+            response.sendRedirect(request.getContextPath() + "/reservations/index");
         }
     }
 

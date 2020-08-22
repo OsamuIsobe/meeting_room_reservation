@@ -1,4 +1,4 @@
-package controllers;
+package controllers.reservations;
 
 import java.io.IOException;
 
@@ -12,17 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import models.Reservation;
 import utils.DBUtil;
+
 /**
- * Servlet implementation class EditServlet
+ * Servlet implementation class ShowServlet
  */
-@WebServlet("/edit")
-public class EditServlet extends HttpServlet {
+@WebServlet("/show")
+public class ShowServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditServlet() {
+    public ShowServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,16 +34,15 @@ public class EditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
+        // 該当のIDのメッセージ1件のみをデータベースから取得
         Reservation r = em.find(Reservation.class, Integer.parseInt(request.getParameter("id")));
 
         em.close();
 
+        // メッセージデータをリクエストスコープにセットしてshow.jspを呼び出す
         request.setAttribute("reservation", r);
-        request.setAttribute("_token", request.getSession().getId());
 
-        request.getSession().setAttribute("reservation_id", r.getId());
-
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reservations/edit.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reservations/show.jsp");
         rd.forward(request, response);
     }
 

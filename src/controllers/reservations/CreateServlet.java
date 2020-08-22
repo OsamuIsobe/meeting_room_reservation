@@ -1,7 +1,9 @@
-package controllers;
+package controllers.reservations;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -45,21 +47,53 @@ public class CreateServlet extends HttpServlet {
 
             Reservation r = new Reservation();
 
-            String room_id = request.getParameter("room_id");
-            r.setRoom_id(room_id);
+            String room_name = request.getParameter("room_name");
+            r.setRoom_name(room_name);
 
-            String name = request.getParameter("name");
-            r.setName(name);
+            String reserver = request.getParameter("reserver");
+            r.setReserver(reserver);
+
+            String comment = request.getParameter("comment");
+            r.setComment(comment);
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            r.setReserve_time(currentTime);
+            r.setCreated_at(currentTime);
+            r.setUpdated_at(currentTime);
+
+            Timestamp start_time;
+            Timestamp finish_time;
+            String a = request.getParameter("start_time");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            java.util.Date date = null;
+            try {
+                date = sdf.parse(a);
+            } catch (ParseException e) {
+
+                e.printStackTrace();
+            }
+            start_time = new Timestamp(date.getTime());
+
+            r.setStart_time(start_time);
+
+            String b = request.getParameter("start_time");
+
+            java.util.Date date_out = null;
+            try {
+                date_out = sdf.parse(b);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            finish_time = new Timestamp(date_out.getTime());
+
+            r.setFinish_time(finish_time);
 
             em.getTransaction().begin();
             em.persist(r);
             em.getTransaction().commit();
             em.close();
 
-            response.sendRedirect(request.getContextPath() + "/index");
+            response.sendRedirect(request.getContextPath() + "/reservations/index");
         }
     }
 

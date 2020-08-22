@@ -1,4 +1,4 @@
-package controllers;
+package controllers.employees;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Reservation;
+import models.Employee;
 import utils.DBUtil;
 /**
- * Servlet implementation class UpdateServlet
+ * Servlet implementation class EmployeesDestroyServlet
  */
-@WebServlet("/update")
-public class UpdateServlet extends HttpServlet {
+@WebServlet("/employees/destroy")
+public class EmployeesDestroyServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateServlet() {
+    public EmployeesDestroyServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,31 +38,21 @@ public class UpdateServlet extends HttpServlet {
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {String _token = (String)request.getParameter("_token");
+    if(_token != null && _token.equals(request.getSession().getId())) {
         EntityManager em = DBUtil.createEntityManager();
 
-        // セッションスコープからメッセージのIDを取得して
-        // 該当のIDのメッセージ1件のみをデータベースから取得
-        Reservation r = em.find(Reservation.class, (Integer)(request.getSession().getAttribute("reservation_id")));
-
-        String room_id = request.getParameter("room_id");
-        r.setRoom_id(room_id);
-
-        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        r.setReserve_time(currentTime);
-
-        String name= request.getParameter("name");
-        r.setName(name);
+        Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
+        e.setDelete_flag(1);
+        e.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
         em.getTransaction().begin();
         em.getTransaction().commit();
         em.close();
+        request.getSession().setAttribute("flush", "削除が完了しました。");
 
-        // セッションスコープ上の不要になったデータを削除
-        request.getSession().removeAttribute("reservation_id");
-
-        // indexページへリダイレクト
-        response.sendRedirect(request.getContextPath() + "/index");
+        response.sendRedirect(request.getContextPath() + "/employees/index");
+    }
     }
 
 }

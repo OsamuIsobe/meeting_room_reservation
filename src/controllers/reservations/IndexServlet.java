@@ -1,6 +1,7 @@
-package controllers;
+package controllers.reservations;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -14,16 +15,16 @@ import models.Reservation;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class ShowServlet
+ * Servlet implementation class IndexServlet
  */
-@WebServlet("/show")
-public class ShowServlet extends HttpServlet {
+@WebServlet("/reservations/index")
+public class IndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShowServlet() {
+    public IndexServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,16 +35,22 @@ public class ShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
-        // 該当のIDのメッセージ1件のみをデータベースから取得
-        Reservation r = em.find(Reservation.class, Integer.parseInt(request.getParameter("id")));
+        List<Reservation> reservations = em.createNamedQuery("getAllReservations", Reservation.class)
+                                   .getResultList();
 
         em.close();
 
-        // メッセージデータをリクエストスコープにセットしてshow.jspを呼び出す
-        request.setAttribute("reservation", r);
+        request.setAttribute("reservations", reservations);
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reservations/show.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reservations/index.jsp");
         rd.forward(request, response);
+    }
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
     }
 
 }
