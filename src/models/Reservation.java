@@ -17,6 +17,11 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getAllReservations",
             query = "SELECT r FROM Reservation AS r ORDER BY r.id DESC"
+            ),
+
+    @NamedQuery(
+            name = "getRoomAAllReservations",
+            query = "SELECT r FROM Reservation where room_name = 'A' AS r ORDER BY r.id DESC"
             )
 })
 

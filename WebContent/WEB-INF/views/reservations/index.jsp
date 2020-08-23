@@ -6,10 +6,13 @@
         <ul>
             <c:forEach var="reservation" items="${reservations}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/show?id=${reservation.id}">
-                        <c:out value="${reservation.room_name}" />
-                    </a>
-                    ：<c:out value="${reservation.reserver}"></c:out>
+                    <%-- <a href="${pageContext.request.contextPath}/show?id=${reservation.id}"> --%>
+                    <a href="${pageContext.request.contextPath}/index_room_A">A</a><br/>
+                    B<br/>
+                    C<br/>
+                        <%-- <c:out value="${reservation.room_name}" /> --%>
+                    <%--</a>
+                     ：<c:out value="${reservation.reserver}"></c:out> --%>
                 </li>
             </c:forEach>
         </ul>
